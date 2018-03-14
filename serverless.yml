@@ -1,0 +1,49 @@
+service: wedding
+
+provider:
+  name: aws
+  runtime: python3.6
+  versionFunctions: false
+  memorySize: 128
+  region: us-west-2
+
+functions:
+  index:
+    handler: handler.index
+    events:
+      - http:
+          path: ""
+          method: get
+  edit:
+    handler: handler.edit
+    events:
+      - http:
+          path: "edit"
+          method: get
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    noDeploy:
+      - boto3
+      - six
+      - __pycache__
+      - appdirs-1.4.3.dist-info
+      - packaging-16.8.dist-info
+      - six-1.10.0.dist-info
+
+package:
+  exclude:
+    - __pycache__
+    - node_modules/**
+    - .serverless/**
+    - .idea/**
+    - .git/**
+    - .gitignore
+    - serverless.yml
+    - package.json
+    - requirements.txt
+
+plugins:
+  - serverless-plugin-simulate
+  - serverless-python-requirements
